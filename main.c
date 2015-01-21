@@ -49,13 +49,14 @@ int main(void)
 		write_16(0, of); /* Minor version. */
 		write_16(51, of); /* Major version. */
 		
-		write_16(7, of); /* Number of entries in constant pool plus one. */
+		write_16(8, of); /* Number of entries in constant pool plus one. */
 		write_utf8_constant("FuckJava", of);
 		write_class_constant(1, of);
 		write_utf8_constant("java/lang/Object", of);
 		write_class_constant(3, of);
 		write_utf8_constant("main", of);
 		write_utf8_constant("([Ljava/lang/String;)V", of);
+		write_utf8_constant("Code", of);
 		
 		write_16(0x0001 | 0x0010, of); /* Access flags (public final). */
 		
@@ -67,10 +68,19 @@ int main(void)
 		                    
 		write_16(1, of); /* Methods count. */
 		write_16(0x0001 | 0x0008, of); /* Method flags (public static). */
-		write_16(5, of); /* Name index. */
-		write_16(6, of); /* Descriptor index. */
-		write_16(0, of); /* Attributes count. */
+		write_16(5, of); /* Method name index. */
+		write_16(6, of); /* Method descriptor index. */
+		write_16(1, of); /* Method attributes count. */
 		
-		write_16(0, of); /* Attributes count. */
+		write_16(7, of); /* Code attribute name index. */
+		write_32(13, of); /* Code attribute length (without first six bytes). */
+		write_16(100, of); /* Max stack. */
+		write_16(100, of); /* Max locals. */
+		write_32(1, of); /* Code length. */
+		write_8(0xb1, of); /* Return instruction. */
+		write_16(0, of); /* Exception table length. */
+		write_16(0, of); /* Code attribute sub-attributes count. */
+		
+		write_16(0, of); /* Class attributes count. */
 	}
 }
