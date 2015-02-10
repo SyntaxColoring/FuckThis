@@ -9,4 +9,6 @@ size_t write_8(unsigned char data, FILE* stream);
 size_t write_16(unsigned int data, FILE* stream);
 size_t write_32(unsigned long data, FILE* stream);
 
+#define SPLIT_16(u) ((u)>>8)&0xff, (u)&0xff
+
 #endif

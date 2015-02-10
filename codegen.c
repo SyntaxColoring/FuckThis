@@ -1,29 +1,65 @@
 #include "codegen.h"
 
 #include <stdlib.h>
+#include <string.h>
 #include "intwrite.h"
+#include "opcodes.h"
+
+static char CODE_PROLOGUE[] =
+{
+	OP_SIPUSH, SPLIT_16(30000),
+	OP_NEWARRAY, ATYPE_CHAR,
+	OP_ASTORE_N(0)	
+};
+
+static char CODE_EPILOGUE[] =
+{
+	OP_RETURN
+};
+                              
+struct buffer
+{
+	size_t length;
+	size_t reserved_length;
+	unsigned char* data;
+};
+
+void buffer_init(struct buffer* const buffer)
+{
+	buffer->length = 0;
+	buffer->reserved_length = 1;
+	buffer->data = malloc(buffer->reserved_length);
+}
+
+unsigned char* buffer_write(struct buffer* const buffer, const size_t length)
+{
+	while (buffer->length+length > buffer->reserved_length)
+		buffer->data = realloc(buffer->data, buffer->reserved_length *= 2);
+	buffer->length += length;
+	return buffer->data + buffer->length - length;
+}
+
+#define BUFFER_WRITE_ARRAY(b, a) memcpy(buffer_write(b, sizeof(a)), a, sizeof(a))
 
 void generate_code(FILE* const source, struct bytecode_section* const destination)
 {
 	int token;
-	size_t reserved_length = 1; /* To do: Come up with a reasonable value. */
+	struct buffer buffer;
 	
-	destination->max_stack = 123;
-	destination->max_locals = 456;
-	destination->code_length = 0;
-	destination->code = malloc(reserved_length); /* To do: Make sure this isn't NULL. */
+	buffer_init(&buffer);
+	BUFFER_WRITE_ARRAY(&buffer, CODE_PROLOGUE);
 	
 	while ((token = getc(source)) != EOF)
 	{
-		destination->code_length++;	
-		while (reserved_length < destination->code_length)
-		{
-			/* To do: More efficient implementation. */
-			destination->code = realloc(destination->code, reserved_length *= 2);
-		}
 		
-		destination->code[destination->code_length - 1] = 0;
 	}
+	
+	BUFFER_WRITE_ARRAY(&buffer, CODE_EPILOGUE);
+	
+	destination->max_stack = 123;
+	destination->max_locals = 456;
+	destination->code_length = buffer.length;
+	destination->code = buffer.data;
 }
 
 size_t write_bytecode_section(const struct bytecode_section* const source, FILE* const stream)
