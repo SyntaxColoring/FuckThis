@@ -30,8 +30,9 @@ int main(void)
 {
 	struct bytecode_section bytecode_section;
 	FILE* of = fopen("FuckJava.class", "w");
+	FILE* source = fopen("FuckJava.bf", "r");
 	
-	if (!of)
+	if (!of || !source)
 	{
 		perror("Error creating file");
 	}
@@ -69,7 +70,7 @@ int main(void)
 		write_16(1, of); /* Method attributes count. */
 		
 		write_16(7, of); /* Code attribute name index. */
-		generate_code(stdin, &bytecode_section);
+		generate_code(source, &bytecode_section);
 		write_bytecode_section(&bytecode_section, of);
 		
 		write_16(0, of); /* Class attributes count. */
