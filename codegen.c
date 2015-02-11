@@ -9,7 +9,8 @@ static char CODE_PROLOGUE[] =
 {
 	OP_SIPUSH, SPLIT_16(30000),
 	OP_NEWARRAY, ATYPE_CHAR,
-	OP_ASTORE_N(0)	
+	OP_ASTORE_N(0),
+	OP_ICONST_N(0)
 };
 
 static char CODE_EPILOGUE[] =
@@ -45,13 +46,26 @@ void generate_code(FILE* const source, struct bytecode_section* const destinatio
 {
 	int token;
 	struct buffer buffer;
+	unsigned char* current;
 	
 	buffer_init(&buffer);
 	BUFFER_WRITE_ARRAY(&buffer, CODE_PROLOGUE);
 	
 	while ((token = getc(source)) != EOF)
 	{
+		if (token == '>')
+		{
+			current = buffer_write(&buffer, 2);
+			current[0] = OP_ICONST_N(1);
+			current[1] = OP_IADD;
+		}
 		
+		else if (token == '<')
+		{
+			current = buffer_write(&buffer, 2);
+			current[0] = OP_ICONST_N(-1);
+			current[1] = OP_IADD;
+		}
 	}
 	
 	BUFFER_WRITE_ARRAY(&buffer, CODE_EPILOGUE);
