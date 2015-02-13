@@ -66,6 +66,17 @@ void generate_code(FILE* const source, struct bytecode_section* const destinatio
 			current[0] = OP_ICONST_N(-1);
 			current[1] = OP_IADD;
 		}
+		
+		else if (token == '.')
+		{
+			current = buffer_write(&buffer, 6);
+			current[0] = OP_DUP;
+			current[1] = OP_GETSTATIC;
+			current[2] = 0;
+			current[3] = 16;
+			current[4] = OP_SWAP;
+			current[5] = OP_INVOKEVIRTUAL;
+		}
 	}
 	
 	BUFFER_WRITE_ARRAY(&buffer, CODE_EPILOGUE);
@@ -85,4 +96,6 @@ size_t write_bytecode_section(const struct bytecode_section* const source, FILE*
 	fwrite(source->code, 1, source->code_length, stream); /* To do: Return value checking. */
 	write_16(0, stream); /* Exception table length. */
 	write_16(0, stream); /* Sub-attributes count. */
+	
+	return 1;
 }
