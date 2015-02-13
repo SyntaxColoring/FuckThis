@@ -4,6 +4,7 @@
 #define UTIL_H_INCLUDED
 
 #include <stdlib.h> /* For memcpy. */
+#include <stdio.h> /* For FILE*. */
 
 /* BYOB (Bring Your Own Bool).  :) */
 typedef enum {false, true} bool;
@@ -14,8 +15,8 @@ typedef unsigned int  u2;
 typedef unsigned long u4;
 
 /* Functions to allocate memory or die trying. */
-void* xmalloc(size_t size);
-void* xrealloc(void* pointer, size_t size);
+void* malloc_or_die(size_t size);
+void* realloc_or_die(void* pointer, size_t size);
 
 /* A buffer for writing binary data. */
 struct byte_buffer
@@ -27,6 +28,12 @@ struct byte_buffer
 
 /* Default "constructor" for struct byte_buffer. */
 #define BYTE_BUFFER_EMPTY {NULL, 0, 0}
+
+/* Gives buffer at least enough space to hold capacity u1s.  If capacity is
+   smaller than buffer's current capacity, data will be truncated.  If
+   allocation fails, the program is aborted.  This function is called as needed
+   by bb_append() and all bb_write_*() functions. */
+void bb_reserve(struct byte_buffer* buffer, size_t capacity);
 
 /* Returns a pointer to a sub-array at the end of buffer to which at least
    length u1s can be written. */
