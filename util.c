@@ -26,6 +26,14 @@ void* realloc_or_die(void* const pointer, const size_t size)
 	return result;
 }
 
+void bb_free(struct byte_buffer* const buffer)
+{
+	free(buffer->data);
+	buffer->data = NULL;
+	buffer->length = 0;
+	buffer->capacity = 0;
+}
+
 void bb_reserve(struct byte_buffer* const buffer, const size_t capacity)
 {
 	buffer->data = realloc_or_die(buffer->data, buffer->capacity = capacity);

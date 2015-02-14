@@ -28,6 +28,9 @@ struct byte_buffer
 /* Default "constructor" for struct byte_buffer. */
 #define BYTE_BUFFER_EMPTY {NULL, 0, 0}
 
+/* Releases the resources held by buffer and resets its members. */
+void bb_free(struct byte_buffer* buffer);
+
 /* Gives buffer at least enough space to hold capacity u1s.  If capacity is
    smaller than buffer's current capacity, data will be truncated.  If
    allocation fails, the program is aborted.  This function is called as needed
