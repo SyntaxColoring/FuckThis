@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <errno.h>
 
-#include "javaclass.h"
+#include "java.h"
 #include "util.h"
 
 int main(void)

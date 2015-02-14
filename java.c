@@ -1,4 +1,4 @@
-#include "javaclass.h"
+#include "java.h"
 
 #include <stdlib.h>
 #include <string.h>
