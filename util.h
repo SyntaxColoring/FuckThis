@@ -3,7 +3,6 @@
 #ifndef UTIL_H_INCLUDED
 #define UTIL_H_INCLUDED
 
-#include <stdlib.h> /* For memcpy. */
 #include <stdio.h> /* For FILE*. */
 
 /* BYOB (Bring Your Own Bool).  :) */
@@ -44,14 +43,15 @@ void bb_write_u1(struct byte_buffer* buffer, u1 data);
 void bb_write_u2(struct byte_buffer* buffer, u2 data);
 void bb_write_u4(struct byte_buffer* buffer, u4 data);
 
+/* Writes length elements from array into buffer. */
+void bb_write_array(struct byte_buffer* buffer, const u1* array, size_t length);
+
 /* Appends all the elements in the given initializer to the given buffer.
-   Usage example: bb_write_array(foo, {1, 2, 3}); */
-#define bb_write_array(buffer_pointer, data_array_initializer) \
+   Usage example: bb_write_static_array(foo, {1, 2, 3}); */
+#define bb_write_static_array(buffer_pointer, array_initializer) \
 	do { \
-		u1 data_array = data_array_initializer; \
-		memcpy(bb_append(buffer_pointer, sizeof(data_array_initializer)) \
-		       &data_array, \
-		       sizeof(data_array_initializer)); \
+		u1 array[] = array_initializer; \
+		bb_write_array(buffer_pointer, array, sizeof(array)); \
 	} while (false)
 
 /* Writes all of a buffer's data into a stream.  Returns whether or not the

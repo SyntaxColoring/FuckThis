@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 void* malloc_or_die(const size_t size)
 {
@@ -66,6 +67,12 @@ void bb_write_u4(struct byte_buffer* const buffer, const u4 data)
 	destination[3] = data;
 }
 
+/* Writes length elements from data into buffer. */
+void bb_write_array(struct byte_buffer* const buffer, const u1* const array, const size_t length)
+{
+	memcpy(bb_append(buffer, length), array, length);
+}
+		
 bool bb_write_to_stream(const struct byte_buffer* const buffer, FILE* const stream)
 {
 	return (fwrite(buffer->data, 1, buffer->length, stream) == buffer->length);
