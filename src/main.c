@@ -8,23 +8,26 @@
 
 int main(void)
 {
-	struct java_class class;
+	struct java_file* file = java_create();
 	FILE* of = fopen("FuckJava.class", "w");
 	FILE* source = fopen("FuckJava.bf", "r");
 	
 	if (!of || !source)
 	{
 		perror("Error creating file");
+		return EXIT_FAILURE;
 	}
 	
 	else
 	{
-		class.name = "FuckJava";
-		class.super_name = "java/lang/Object";
-		class.access_flags = JAVA_CLASS_PUBLIC | JAVA_CLASS_FINAL;
-		class.constant_count = 0;
-		class.constants = NULL;
-		class.method_count = 0;
-		java_class_write(&class, of);
+		struct java_class* class = java_get_class(file);
+		
+		class->name = "FuckJava";
+		class->super_name = "java/lang/Object";
+		class->access_flags = JAVA_ACCESS_PUBLIC | JAVA_ACCESS_FINAL;
+		class->method_count = 0;
+		java_write(file, of);
 	}
+	
+	return EXIT_SUCCESS;
 }

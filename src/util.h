@@ -49,14 +49,6 @@ void bb_write_u4(struct byte_buffer* buffer, u4 data);
 /* Writes length elements from array into buffer. */
 void bb_write_array(struct byte_buffer* buffer, const u1* array, size_t length);
 
-/* Appends all the elements in the given initializer to the given buffer.
-   Usage example: bb_write_static_array(foo, {1, 2, 3}); */
-#define bb_write_static_array(buffer_pointer, array_initializer) \
-	do { \
-		u1 array[] = array_initializer; \
-		bb_write_array(buffer_pointer, array, sizeof(array)); \
-	} while (false)
-
 /* Writes all of a buffer's data into a stream.  Returns whether or not the
    operation succeeded. */
 bool bb_write_to_stream(const struct byte_buffer* buffer, FILE* stream);
