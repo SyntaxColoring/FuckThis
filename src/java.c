@@ -6,10 +6,21 @@
 
 #include "util.h"
 
+#define MAX_CONSTANTS 50
+
+enum java_constant_tag
+{
+	CONSTANT_UTF8          = 1;
+	CONSTANT_CLASS         = 7;
+	CONSTANT_FIELD         = 9;
+	CONSTANT_METHOD        = 10;
+	CONSTANT_NAME_AND_TYPE = 12;
+};
+
 /* Represents any kind of constant in the class's runtime constant pool. */
 struct java_constant
 {
-	unsigned char tag; /* Type identifier. */
+	enum java_constant_tag tag;
 	
 	union
 	{
@@ -26,20 +37,34 @@ struct java_constant
 	} data;
 };
 
-/* Constant tags. */
-static const unsigned int CONSTANT_UTF8          = 1;
-static const unsigned int CONSTANT_CLASS         = 7;
-static const unsigned int CONSTANT_FIELD         = 9;
-static const unsigned int CONSTANT_METHOD        = 10;
-static const unsigned int CONSTANT_NAME_AND_TYPE = 12;
+struct java_file
+{
+	size_t constant_count;
+	java_constant[MAX_CONSTANTS] constants;
+	
+	struct java_class class;
+};
 
-const unsigned int JAVA_CLASS_PUBLIC = 0x0001;
-const unsigned int JAVA_CLASS_STATIC = 0x0008;
-const unsigned int JAVA_CLASS_FINAL  = 0x0010;
+struct java_file* java_create(void)
+{
+	struct java_file* new_file = malloc_or_die(sizeof(java_File));
+	new_file->constant_count = 0;
+	return new_file;
+}
 
-/* Returns nonzero if a is logically equal to b, assuming both a and b reside
-   (or will reside) in the same constant pool. */
-static int constants_equal(const struct java_constant a, const struct java_constant b)
+void java_free(const struct java_file* const file)
+{
+	free(file);
+}
+
+struct java_class* java_get_class(struct java_file* const file)
+{
+	return file->class;
+}
+
+/* Performs a shallow equality check on the given constants.  This assumes both
+   constants reside, or will reside, in the same constant pool. */
+static bool constants_equal(const struct java_constant a, const struct java_constant b)
 {
 	if (a.tag != b.tag) return 0;
 	else if (a.tag == CONSTANT_UTF8)
