@@ -93,6 +93,23 @@ static void write_constant(const struct java_constant constant, struct byte_buff
 	}
 }
 
+static void write_method(java_file file, const struct java_method method, struct byte_buffer* const buffer)
+{
+	bb_write_u2(buffer, method.access_flags);
+	bb_write_u2(buffer, java_ref_utf8(file, method.name));
+	bb_write_u2(buffer, java_ref_utf8(file, method.type));
+	bb_write_u2(buffer, 1); /* Attributes count (just the code attribute). */
+	
+	bb_write_u2(buffer, java_ref_utf8(file, "Code"));
+	bb_write_u4(buffer, 12 + method.bytecode_length);
+	bb_write_u2(buffer, method.max_stack);
+	bb_write_u2(buffer, method.max_locals);
+	bb_write_u4(buffer, method.bytecode_length);
+	bb_write_array(buffer, method.bytecode, method.bytecode_length);
+	bb_write_u2(buffer, 0); /* Exception table length. */
+	bb_write_u2(buffer, 0); /* Number of sub-attributes of the code attribute. */
+}
+
 static unsigned int add_constant(java_file destination,
                                  struct java_constant new_constant)
 {
@@ -175,7 +192,8 @@ void java_write(java_file const file, FILE* const stream)
 	bb_write_u2(&class_buffer, 0); /* Interfaces count. */
 	bb_write_u2(&class_buffer, 0); /* Fields count. */
 	bb_write_u2(&class_buffer, class.method_count);
-	/* To do: Write methods if there are any. */
+	for (index = 0; index < class.method_count; index++)
+		write_method(file, class.methods[index], &class_buffer);
 	bb_write_u2(&class_buffer, 0); /* Class attributes count. */
 	
 	bb_write_u4(&file_buffer, 0xcafebabe); /* Magic number. */

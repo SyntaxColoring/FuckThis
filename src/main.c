@@ -1,10 +1,10 @@
 #include <stdlib.h>
-#include <string.h>
 #include <stdio.h>
 #include <errno.h>
 
-#include "java.h"
 #include "util.h"
+#include "java.h"
+#include "codegen.h"
 
 int main(void)
 {
@@ -25,7 +25,12 @@ int main(void)
 		class->name = "FuckJava";
 		class->super_name = "java/lang/Object";
 		class->access_flags = JAVA_ACCESS_PUBLIC | JAVA_ACCESS_FINAL;
-		class->method_count = 0;
+		class->method_count = 1;
+		class->methods = malloc(sizeof(struct java_method));
+		class->methods[0].name = "main";
+		class->methods[0].type = "([Ljava/lang/String;)V";
+		class->methods[0].access_flags = JAVA_ACCESS_PUBLIC | JAVA_ACCESS_STATIC;
+		generate_code(file, 0, source);
 		java_write(file, of);
 	}
 	
