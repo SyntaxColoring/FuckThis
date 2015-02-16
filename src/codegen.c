@@ -57,7 +57,7 @@ void generate_code(java_file file, const size_t method_index, FILE* const source
 			bb_write_u2(&buffer, java_ref_field(file, "java/lang/System", "out", "Ljava/io/PrintStream;"));
 			bb_write_u1(&buffer, OP_SWAP);
 			bb_write_u1(&buffer, OP_INVOKEVIRTUAL);
-			bb_write_u2(&buffer, java_ref_method(file, "java/io/PrintStream", "println", "(C)V"));
+			bb_write_u2(&buffer, java_ref_method(file, "java/io/PrintStream", "print", "(C)V"));
 		}
 		else if (token == '[')
 		{
