@@ -15,7 +15,7 @@ void generate_code(java_file file, const size_t method_index, FILE* const source
 	bb_write_u2(&buffer, 30000),
 	bb_write_u1(&buffer, OP_NEWARRAY);
 	bb_write_u1(&buffer, ATYPE_CHAR);
-	bb_write_u1(&buffer, OP_ASTORE_N(0));
+	
 	bb_write_u1(&buffer, OP_ICONST_N(0));
 	
 	while ((token = getc(source)) != EOF)
@@ -30,11 +30,24 @@ void generate_code(java_file file, const size_t method_index, FILE* const source
 			bb_write_u1(&buffer, OP_ICONST_N(1));
 			bb_write_u1(&buffer, OP_IADD);
 		}
+		else if (token == '+')
+		{
+			bb_write_u1(&buffer, OP_DUP2);
+			bb_write_u1(&buffer, OP_DUP2);
+			bb_write_u1(&buffer, OP_CALOAD);
+			bb_write_u1(&buffer, OP_ICONST_N(1));
+			bb_write_u1(&buffer, OP_IADD);
+			bb_write_u1(&buffer, OP_CASTORE);
+		}
 		else if (token == '.')
 		{
-			bb_write_u1(&buffer, OP_DUP);
+			bb_write_u1(&buffer, OP_DUP2);
+			bb_write_u1(&buffer, OP_CALOAD);
 			bb_write_u1(&buffer, OP_GETSTATIC);
 			bb_write_u2(&buffer, java_ref_field(file, "java/lang/System", "out", "Ljava/io/PrintStream;"));
+			bb_write_u1(&buffer, OP_SWAP);
+			bb_write_u1(&buffer, OP_INVOKEVIRTUAL);
+			bb_write_u2(&buffer, java_ref_method(file, "java/io/PrintStream", "println", "(C)V"));
 		}
 	}
 	

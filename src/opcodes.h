@@ -14,6 +14,7 @@
 #define OP_GETSTATIC     0xb2
 #define OP_SWAP          0x5f
 #define OP_DUP           0x59
+#define OP_DUP2          0x5c
 #define OP_INVOKEVIRTUAL 0xb6
 
 #define ATYPE_CHAR  5
