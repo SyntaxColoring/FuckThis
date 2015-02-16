@@ -35,7 +35,7 @@ struct java_constant
 	} data;
 };
 
-struct java_file
+struct java_file_opaque
 {
 	size_t constant_count;
 	struct java_constant constants[MAX_CONSTANTS];
@@ -43,19 +43,19 @@ struct java_file
 	struct java_class class;
 };
 
-struct java_file* java_create(void)
+java_file java_create(void)
 {
-	struct java_file* new_file = malloc_or_die(sizeof(struct java_file));
+	java_file new_file = malloc_or_die(sizeof(struct java_file_opaque));
 	new_file->constant_count = 0;
 	return new_file;
 }
 
-void java_free(struct java_file* const file)
+void java_free(java_file file)
 {
 	free(file);
 }
 
-struct java_class* java_get_class(struct java_file* const file)
+struct java_class* java_get_class(java_file const file)
 {
 	return &file->class;
 }
@@ -93,7 +93,7 @@ static void write_constant(const struct java_constant constant, struct byte_buff
 	}
 }
 
-static unsigned int add_constant(struct java_file* destination,
+static unsigned int add_constant(java_file destination,
                                  struct java_constant new_constant)
 {
 	size_t index;
@@ -111,7 +111,7 @@ static unsigned int add_constant(struct java_file* destination,
 	return destination->constant_count;
 }
 
-unsigned int java_ref_utf8(struct java_file* context, const char* string)
+unsigned int java_ref_utf8(java_file context, const char* string)
 {
 	struct java_constant constant;
 	constant.tag = CONSTANT_UTF8;
@@ -119,7 +119,7 @@ unsigned int java_ref_utf8(struct java_file* context, const char* string)
 	return add_constant(context, constant);
 }
 
-unsigned int java_ref_class(struct java_file* context, const char* name)
+unsigned int java_ref_class(java_file context, const char* name)
 {
 	struct java_constant constant;
 	constant.tag = CONSTANT_CLASS;
@@ -127,7 +127,7 @@ unsigned int java_ref_class(struct java_file* context, const char* name)
 	return add_constant(context, constant);
 }
 
-unsigned int java_ref_name_and_type(struct java_file* context,
+unsigned int java_ref_name_and_type(java_file context,
                                     const char* name,
                                     const char* type)
 {
@@ -138,7 +138,7 @@ unsigned int java_ref_name_and_type(struct java_file* context,
 	return add_constant(context, constant);
 }
 
-unsigned int java_ref_field(struct java_file* context,
+unsigned int java_ref_field(java_file context,
                             const char* class_name,
                             const char* field_name,
                             const char* field_type)
@@ -150,7 +150,7 @@ unsigned int java_ref_field(struct java_file* context,
 	return add_constant(context, constant);
 }
 
-unsigned int java_ref_method(struct java_file* context,
+unsigned int java_ref_method(java_file context,
                              const char* class_name,
                              const char* method_name,
                              const char* method_type)
@@ -162,7 +162,7 @@ unsigned int java_ref_method(struct java_file* context,
 	return add_constant(context, constant);
 }
 
-void java_write(struct java_file* const file, FILE* const stream)
+void java_write(java_file const file, FILE* const stream)
 {
 	size_t index;
 	const struct java_class class = *java_get_class(file);

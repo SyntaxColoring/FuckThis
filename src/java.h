@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "util.h"
 
-struct java_file;
+typedef struct java_file_opaque* java_file;
 
 enum java_access_flags
 {
@@ -35,21 +35,21 @@ struct java_class
 	struct java_method* methods;
 };
 
-struct java_file* java_create(void);
-void java_free(struct java_file* file);
-struct java_class* java_get_class(struct java_file* file);
-void java_write(struct java_file* file, FILE* stream);
+java_file java_create(void);
+void java_free(java_file file);
+struct java_class* java_get_class(java_file file);
+void java_write(java_file file, FILE* stream);
 
-unsigned int java_ref_utf8(struct java_file* file, const char* string);
-unsigned int java_ref_class(struct java_file* file, const char* name);
-unsigned int java_ref_name_and_type(struct java_file* file,
+unsigned int java_ref_utf8(java_file file, const char* string);
+unsigned int java_ref_class(java_file file, const char* name);
+unsigned int java_ref_name_and_type(java_file file,
                                     const char* name,
                                     const char* type);
-unsigned int java_ref_field(struct java_file* file,
+unsigned int java_ref_field(java_file file,
                             const char* class_name,
                             const char* field_name,
                             const char* field_type);
-unsigned int java_ref_method(struct java_file* context,
+unsigned int java_ref_method(java_file context,
                              const char* class_name,
                              const char* method_name,
                              const char* method_type);

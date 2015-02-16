@@ -5,7 +5,7 @@
 #include "java.h"
 #include "opcodes.h"
 
-void generate_code(struct java_file* const file, const size_t method_index, FILE* const source)
+void generate_code(java_file file, const size_t method_index, FILE* const source)
 {
 	struct java_method* method = java_get_class(file)->methods + method_index;
 	struct byte_buffer buffer = BYTE_BUFFER_EMPTY;	

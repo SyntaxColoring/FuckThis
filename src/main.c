@@ -8,7 +8,7 @@
 
 int main(void)
 {
-	struct java_file* file = java_create();
+	java_file file = java_create();
 	FILE* of = fopen("FuckJava.class", "w");
 	FILE* source = fopen("FuckJava.bf", "r");
 	

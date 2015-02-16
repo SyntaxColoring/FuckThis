@@ -5,6 +5,6 @@
 #include <stdio.h>
 #include "java.h"
 
-void generate_code(struct java_file* const file, const size_t method_index, FILE* source);
+void generate_code(java_file file, const size_t method_index, FILE* source);
 
 #endif
