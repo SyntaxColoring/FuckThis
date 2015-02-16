@@ -8,7 +8,8 @@
 void generate_code(java_file file, const size_t method_index, FILE* const source)
 {
 	struct java_method* method = java_get_class(file)->methods + method_index;
-	struct byte_buffer buffer = BYTE_BUFFER_EMPTY;	
+	struct byte_buffer buffer = BYTE_BUFFER_EMPTY;
+	size_t last_open_bracket = 0;
 	int token;
 	
 	bb_write_u1(&buffer, OP_SIPUSH);
@@ -27,7 +28,7 @@ void generate_code(java_file file, const size_t method_index, FILE* const source
 		}
 		else if (token == '<')
 		{
-			bb_write_u1(&buffer, OP_ICONST_N(1));
+			bb_write_u1(&buffer, OP_ICONST_N(-1));
 			bb_write_u1(&buffer, OP_IADD);
 		}
 		else if (token == '+')
@@ -36,6 +37,15 @@ void generate_code(java_file file, const size_t method_index, FILE* const source
 			bb_write_u1(&buffer, OP_DUP2);
 			bb_write_u1(&buffer, OP_CALOAD);
 			bb_write_u1(&buffer, OP_ICONST_N(1));
+			bb_write_u1(&buffer, OP_IADD);
+			bb_write_u1(&buffer, OP_CASTORE);
+		}
+		else if (token == '-')
+		{
+			bb_write_u1(&buffer, OP_DUP2);
+			bb_write_u1(&buffer, OP_DUP2);
+			bb_write_u1(&buffer, OP_CALOAD);
+			bb_write_u1(&buffer, OP_ICONST_N(-1));
 			bb_write_u1(&buffer, OP_IADD);
 			bb_write_u1(&buffer, OP_CASTORE);
 		}
@@ -48,6 +58,28 @@ void generate_code(java_file file, const size_t method_index, FILE* const source
 			bb_write_u1(&buffer, OP_SWAP);
 			bb_write_u1(&buffer, OP_INVOKEVIRTUAL);
 			bb_write_u2(&buffer, java_ref_method(file, "java/io/PrintStream", "println", "(C)V"));
+		}
+		else if (token == '[')
+		{
+			bb_write_u1(&buffer, OP_DUP2);
+			bb_write_u1(&buffer, OP_CALOAD);
+			
+			bb_write_u1(&buffer, OP_IFEQ);
+			bb_write_u2(&buffer, last_open_bracket);
+			last_open_bracket = buffer.length - 2;
+		}
+		else if (token == ']')
+		{
+			size_t open_bracket = last_open_bracket;
+			size_t offset_to_open_bracket = last_open_bracket-buffer.length-1;
+			bb_write_u1(&buffer, OP_GOTO);
+			bb_write_u2(&buffer, offset_to_open_bracket-2);
+			
+			last_open_bracket = buffer.data[open_bracket] << 8
+			                  | buffer.data[open_bracket+1];
+			
+			buffer.data[open_bracket] = (buffer.length-open_bracket+1) << 8;
+			buffer.data[open_bracket+1] = buffer.length-open_bracket+1; 
 		}
 	}
 	

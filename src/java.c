@@ -198,7 +198,7 @@ void java_write(java_file const file, FILE* const stream)
 	
 	bb_write_u4(&file_buffer, 0xcafebabe); /* Magic number. */
 	bb_write_u2(&file_buffer, 0); /* Minor version. */
-	bb_write_u2(&file_buffer, 51); /* Major version. */
+	bb_write_u2(&file_buffer, 49); /* Major version. */
 	bb_write_u2(&file_buffer, file->constant_count + 1);
 	for (index = 0; index < file->constant_count; index++)
 		write_constant(file->constants[index], &file_buffer);

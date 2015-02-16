@@ -16,6 +16,9 @@
 #define OP_DUP           0x59
 #define OP_DUP2          0x5c
 #define OP_INVOKEVIRTUAL 0xb6
+#define OP_IFEQ          0x99
+#define OP_GOTO          0xa7
+#define OP_POP           0x57
 
 #define ATYPE_CHAR  5
 
