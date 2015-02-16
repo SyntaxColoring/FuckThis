@@ -59,6 +59,15 @@ void generate_code(java_file file, const size_t method_index, FILE* const source
 			bb_write_u1(&buffer, OP_INVOKEVIRTUAL);
 			bb_write_u2(&buffer, java_ref_method(file, "java/io/PrintStream", "print", "(C)V"));
 		}
+		else if (token == ',')
+		{
+			bb_write_u1(&buffer, OP_DUP2);
+			bb_write_u1(&buffer, OP_GETSTATIC);
+			bb_write_u2(&buffer, java_ref_field(file, "java/lang/System", "in", "Ljava/io/InputStream;"));
+			bb_write_u1(&buffer, OP_INVOKEVIRTUAL);
+			bb_write_u2(&buffer, java_ref_method(file, "java/io/InputStream", "read", "()I"));
+			bb_write_u1(&buffer, OP_CASTORE);
+		}
 		else if (token == '[')
 		{
 			bb_write_u1(&buffer, OP_DUP2);
