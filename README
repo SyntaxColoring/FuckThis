@@ -14,7 +14,7 @@ Usage Example
     +.>>.<-.<.+++.------.--------.>>+.>++.' > hello.bf
     $ ./fj hello.bf Hello.class
     $ file Hello.class
-    FuckJava.class: compiled Java class data, version 49.0 (Java 1.5)
+    Hello.class: compiled Java class data, version 49.0 (Java 1.5)
     $ java Hello
     Hello World!
 
