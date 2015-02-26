@@ -14,8 +14,8 @@ int main(int argument_count, char** arguments)
 	     (!strcmp(arguments[1], "-h") ||
 	      !strcmp(arguments[1], "--help"))))
 	{
-		printf("The FuckJava Brainfuck compiler\n"
-		       "https://github.com/SyntaxColoring/FuckJava\n"
+		printf("Fuck This: a Brainfuck compiler that produces Java binaries.\n"
+		       "https://github.com/SyntaxColoring/FuckThis\n"
 		       "Usage:\n"
 		       "  %s input_file class_name\n"
 		       "Arguments:\n"

@@ -1,4 +1,4 @@
-TARGET:=fj
+TARGET:=ft
 SOURCE_DIR:=src
 
 SOURCES:=$(wildcard $(SOURCE_DIR)/*.c)
