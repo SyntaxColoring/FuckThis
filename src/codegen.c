@@ -65,7 +65,7 @@ static void write_method_prologue(buffer destination)
 {
 	write_integer_push(destination, 30000);
 	buffer_write_u1(destination, OP_NEWARRAY);
-	buffer_write_u1(destination, ATYPE_CHAR);
+	buffer_write_u1(destination, ARRAY_TYPE_CHAR);
 	write_integer_push(destination, 0);
 }
 
