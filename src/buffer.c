@@ -65,19 +65,19 @@ buffer_u1* buffer_publish(buffer handle)
 	return data;
 }
 
-void buffer_write_u1(buffer handle, buffer_u1 u1)
+void buffer_write_1(buffer handle, buffer_u1 u1)
 {
 	buffer_extend(handle, 1)[0] = u1;
 }
 
-void buffer_write_u2(buffer handle, buffer_u2 u2)
+void buffer_write_2(buffer handle, buffer_u2 u2)
 {
 	buffer_u1* const bytes = buffer_extend(handle, 2);
 	bytes[0] = u2 >> 8;
 	bytes[1] = u2;
 }
 
-void buffer_write_u4(buffer handle, buffer_u4 u4)
+void buffer_write_4(buffer handle, buffer_u4 u4)
 {
 	buffer_u1* const bytes = buffer_extend(handle, 4);
 	bytes[0] = u4 >> 24;

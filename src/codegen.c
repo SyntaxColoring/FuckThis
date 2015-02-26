@@ -51,27 +51,27 @@ static void write_integer_push(buffer destination, int value)
 {
 	if (value >= OP_ICONST_N_MIN && value <= OP_ICONST_N_MAX)
 	{
-		buffer_write_u1(destination, OP_ICONST_N(value));
+		buffer_write_1(destination, OP_ICONST_N(value));
 	}
 	
 	else
 	{
-		buffer_write_u1(destination, OP_SIPUSH);
-		buffer_write_u2(destination, value);
+		buffer_write_1(destination, OP_SIPUSH);
+		buffer_write_2(destination, value);
 	}
 }
 
 static void write_method_prologue(buffer destination)
 {
 	write_integer_push(destination, 30000);
-	buffer_write_u1(destination, OP_NEWARRAY);
-	buffer_write_u1(destination, ARRAY_TYPE_BYTE);
+	buffer_write_1(destination, OP_NEWARRAY);
+	buffer_write_1(destination, ARRAY_TYPE_BYTE);
 	write_integer_push(destination, 0);
 }
 
 static void write_method_epilogue(buffer destination)
 {
-	buffer_write_u1(destination, OP_RETURN);
+	buffer_write_1(destination, OP_RETURN);
 }
 
 static void write_index_change(buffer destination, int change)
@@ -79,7 +79,7 @@ static void write_index_change(buffer destination, int change)
 	if (change)
 	{
 		write_integer_push(destination, change);
-		buffer_write_u1(destination, OP_IADD);
+		buffer_write_1(destination, OP_IADD);
 	}
 }
 
@@ -87,49 +87,49 @@ static void write_value_change(buffer destination, int change)
 {
 	if (change)
 	{
-		buffer_write_u1(destination, OP_DUP2);
-		buffer_write_u1(destination, OP_DUP2);
-		buffer_write_u1(destination, OP_BALOAD);
+		buffer_write_1(destination, OP_DUP2);
+		buffer_write_1(destination, OP_DUP2);
+		buffer_write_1(destination, OP_BALOAD);
 		write_integer_push(destination, change);
-		buffer_write_u1(destination, OP_IADD);
-		buffer_write_u1(destination, OP_BASTORE);
+		buffer_write_1(destination, OP_IADD);
+		buffer_write_1(destination, OP_BASTORE);
 	}
 }
 
 static void write_output(buffer destination, java_file file)
 {
-	buffer_write_u1(destination, OP_DUP2);
-	buffer_write_u1(destination, OP_BALOAD);
-	buffer_write_u1(destination, OP_GETSTATIC);
-	buffer_write_u2(destination, java_ref_field(file, "java/lang/System", "out", "Ljava/io/PrintStream;"));
-	buffer_write_u1(destination, OP_SWAP);
-	buffer_write_u1(destination, OP_INVOKEVIRTUAL);
-	buffer_write_u2(destination, java_ref_method(file, "java/io/PrintStream", "print", "(C)V"));
+	buffer_write_1(destination, OP_DUP2);
+	buffer_write_1(destination, OP_BALOAD);
+	buffer_write_1(destination, OP_GETSTATIC);
+	buffer_write_2(destination, java_ref_field(file, "java/lang/System", "out", "Ljava/io/PrintStream;"));
+	buffer_write_1(destination, OP_SWAP);
+	buffer_write_1(destination, OP_INVOKEVIRTUAL);
+	buffer_write_2(destination, java_ref_method(file, "java/io/PrintStream", "print", "(C)V"));
 }
 
 static void write_input(buffer destination, java_file file)
 {
-	buffer_write_u1(destination, OP_DUP2);
-	buffer_write_u1(destination, OP_GETSTATIC);
-	buffer_write_u2(destination, java_ref_field(file, "java/lang/System", "in", "Ljava/io/InputStream;"));
-	buffer_write_u1(destination, OP_INVOKEVIRTUAL);
-	buffer_write_u2(destination, java_ref_method(file, "java/io/InputStream", "read", "()I"));
-	buffer_write_u1(destination, OP_BASTORE);
+	buffer_write_1(destination, OP_DUP2);
+	buffer_write_1(destination, OP_GETSTATIC);
+	buffer_write_2(destination, java_ref_field(file, "java/lang/System", "in", "Ljava/io/InputStream;"));
+	buffer_write_1(destination, OP_INVOKEVIRTUAL);
+	buffer_write_2(destination, java_ref_method(file, "java/io/InputStream", "read", "()I"));
+	buffer_write_1(destination, OP_BASTORE);
 }
 
 static void write_loop_prologue(buffer destination, size_t loop_body_length)
 {
-	buffer_write_u1(destination, OP_DUP2);
-	buffer_write_u1(destination, OP_BALOAD);
+	buffer_write_1(destination, OP_DUP2);
+	buffer_write_1(destination, OP_BALOAD);
 	
-	buffer_write_u1(destination, OP_IFEQ);
-	buffer_write_u2(destination, loop_body_length + 6);
+	buffer_write_1(destination, OP_IFEQ);
+	buffer_write_2(destination, loop_body_length + 6);
 }
 
 static void write_loop_epilogue(buffer destination, size_t loop_body_length)
 {
-	buffer_write_u1(destination, OP_GOTO);
-	buffer_write_u2(destination, -loop_body_length - 5);
+	buffer_write_1(destination, OP_GOTO);
+	buffer_write_2(destination, -loop_body_length - 5);
 }
 
 static void write_loop(buffer destination, FILE* source, java_file file);

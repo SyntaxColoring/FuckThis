@@ -36,9 +36,14 @@ buffer_u1* buffer_publish(buffer handle);
 
 /* Note: All buffer_write_*() functions can trigger reallocations. */
 
-void buffer_write_u1(buffer handle, buffer_u1 u1); /* Writes a single byte. */
-void buffer_write_u2(buffer handle, buffer_u2 u2); /* Writes two bytes. (big-endian). */
-void buffer_write_u4(buffer handle, buffer_u4 u4); /* Writes four bytes (big-endian). */
+/* Writes 1 byte. */
+void buffer_write_1(buffer handle, buffer_u1 u1);
+
+/* Writes a 2-byte integer in big-endian order. */
+void buffer_write_2(buffer handle, buffer_u2 u2);
+
+/* Writes a 4-byte integer in big-endian order. */
+void buffer_write_4(buffer handle, buffer_u4 u4);
 
 /* Writes length bytes from array into the given buffer. */
 void buffer_write_array(buffer handle, const buffer_u1* array, size_t length);
