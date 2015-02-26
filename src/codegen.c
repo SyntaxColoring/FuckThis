@@ -202,8 +202,8 @@ void generate_code(java_file file, size_t method_index, FILE* source)
 	
 	if (success)
 	{
-		method->max_stack = 123;
-		method->max_locals = 456;
+		method->max_stack = 6;
+		method->max_locals = 1;
 		method->bytecode_length = buffer_length(bytecode_buffer);
 		method->bytecode = buffer_publish(bytecode_buffer);
 	}
