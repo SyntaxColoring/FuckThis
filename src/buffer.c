@@ -23,11 +23,11 @@ static buffer_u1* buffer_extend(buffer handle, size_t additional_length)
 	if (handle->capacity < required_capacity)
 	{
 		const size_t new_capacity = required_capacity*2;
-		realloc_or_die(handle->data, new_capacity);
+		handle->data = realloc_or_die(handle->data, new_capacity);
 		handle->capacity = new_capacity;
 	}
 	handle->length += additional_length;
-	return handle->data + handle->length - additional_length;	
+	return handle->data + handle->length - additional_length;
 }
 
 /* Sets the given buffer to be empty. */
@@ -42,7 +42,8 @@ buffer buffer_create(size_t initial_capacity)
 {
 	buffer new_buffer = malloc_or_die(sizeof(struct buffer_implementation));
 	buffer_reset(new_buffer);
-	buffer_extend(new_buffer, initial_capacity);
+	new_buffer->data = malloc_or_die(initial_capacity);
+	new_buffer->capacity = initial_capacity;
 	return new_buffer;
 }
 
