@@ -1,6 +1,6 @@
 /* opcodes.h - Mnemonics for JVM opcodes.  See chapter 6 of the Java Virtual
    Machine Specification, Second Edition:
-   http://docs.oracle.com/javase/specs/jvms/se5.0/html/Instructions.doc.html */
+   https://docs.oracle.com/javase/specs/jvms/se5.0/html/Instructions.doc.html */
 
 #ifndef OPCODES_H_INCLUDED
 #define OPCODES_H_INCLUDED
@@ -9,8 +9,8 @@ enum opcode
 {
 	OP_ICONST_0      = 0x03,
 	OP_SIPUSH        = 0x11,
-	OP_CALOAD        = 0x34,
-	OP_CASTORE       = 0x55,
+	OP_BALOAD        = 0x33,
+	OP_BASTORE       = 0x54,
 	OP_DUP2          = 0x5c,
 	OP_SWAP          = 0x5f,
 	OP_IADD          = 0x60,
@@ -28,7 +28,7 @@ enum opcode
 		
 enum array_type /* Used with OP_NEWARRAY. */
 {
-	ARRAY_TYPE_CHAR = 5
+	ARRAY_TYPE_BYTE = 8
 };
 
 #endif
