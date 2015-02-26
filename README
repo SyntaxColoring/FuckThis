@@ -1,6 +1,6 @@
 Introduction
 ============
-FuckJava compiles [Brainfuck](http://www.muppetlabs.com/~breadbox/bf/) programs
+FuckJava compiles [Brainfuck](https://esolangs.org/wiki/Brainfuck) programs
 to Java bytecode.  It emits standalone Java SE 5 class files.  FuckJava is
 written in ANSI C (C90).
 
@@ -12,13 +12,13 @@ Usage Example
 =============
     $ echo '++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..++
     +.>>.<-.<.+++.------.--------.>>+.>++.' > hello.bf
-    $ ./fj hello.bf Hello.class
+    $ ./fj hello.bf Hello
     $ file Hello.class
     Hello.class: compiled Java class data, version 49.0 (Java 1.5)
     $ java Hello
     Hello World!
 
-For detailed instructions, run `./fj --help`.
+For detailed instructions, supply the `--help` option.
 
 Portability Notes - "FuckJava Flavored Brainfuck"
 =================================================
