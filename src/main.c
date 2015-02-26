@@ -19,7 +19,7 @@ int main(int argument_count, char** arguments)
 		       "Usage:\n"
 		       "  %s input_file class_name\n"
 		       "Arguments:\n"
-		       "  input_file  - The name of the Brainfuck source file.\n"
+		       "  input_file - The name of the Brainfuck source file.\n"
 		       "  class_name - The name of the Java class to generate.\n",
 		       arguments[0]);
 		return EXIT_SUCCESS;
