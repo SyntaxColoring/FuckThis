@@ -6,7 +6,7 @@ written in ANSI C (C90).
 
 License
 =======
-This software is released under the terms of the [WTFPL](LICENSE.md).  Naturally.
+This software is released under the terms of the [WTFPL](LICENSE.txt).  Naturally.
 
 Usage Example
 =============
