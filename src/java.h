@@ -1,3 +1,5 @@
+/* java.h - Structures for building Java class files. */
+
 #ifndef JAVACLASS_H_INCLUDED
 #define JAVACLASS_H_INCLUDED
 
