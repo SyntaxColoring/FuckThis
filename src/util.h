@@ -17,6 +17,14 @@ typedef unsigned long u4;
 void* malloc_or_die(size_t size);
 void* realloc_or_die(void* pointer, size_t size);
 
+/* Returns a string that is a copy of source.  The caller is responsible for
+   freeing the new string. */
+char* string_clone(const char* source);
+
+/* Returns a string that is a concatenated with b.  The caller is responsible
+   for freeing the new string. */
+char* string_create_concatenated(const char* a, const char* b);
+
 /* A buffer for writing binary data. */
 struct byte_buffer
 {

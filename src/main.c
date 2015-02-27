@@ -44,9 +44,7 @@ int main(int argument_count, char** arguments)
 		java_file file;
 		struct java_class* class;
 		
-		output_filename = malloc_or_die(strlen(class_name)+sizeof(".class")-1);
-		strcpy(output_filename, class_name);
-		strcat(output_filename, ".class");
+		output_filename = string_create_concatenated(class_name, ".class");
 		
 		source = fopen(source_filename, "r");
 		if (!source)

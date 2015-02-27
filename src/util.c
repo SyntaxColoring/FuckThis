@@ -26,6 +26,25 @@ void* realloc_or_die(void* const pointer, const size_t size)
 	return result;
 }
 
+char* string_clone(const char* source)
+{
+	const size_t buffer_length = strlen(source)+1;
+	
+	/* memcpy appears to be slightly faster than strcpy here. */
+	return memcpy(malloc_or_die(buffer_length), source, buffer_length);
+}
+
+char* string_create_concatenated(const char* a, const char* b)
+{
+	const size_t a_length = strlen(a);
+	const size_t b_length = strlen(b);
+	
+	char* const result = malloc_or_die(a_length + b_length + 1);
+	memcpy(result, a, a_length);
+	memcpy(result + a_length, b, b_length + 1);
+	return result;
+}
+
 void bb_free(struct byte_buffer* const buffer)
 {
 	free(buffer->data);
