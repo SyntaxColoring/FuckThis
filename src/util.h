@@ -13,6 +13,9 @@ typedef unsigned char u1;
 typedef unsigned int  u2;
 typedef unsigned long u4;
 
+/* Calls perror() with message and aborts the program. */
+void fatal_error(const char* message);
+
 /* Functions to allocate memory or die trying. */
 void* malloc_or_die(size_t size);
 void* realloc_or_die(void* pointer, size_t size);

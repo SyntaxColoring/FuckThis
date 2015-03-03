@@ -4,25 +4,23 @@
 #include <stdio.h>
 #include <string.h>
 
+void fatal_error(const char* message)
+{
+	perror(message);
+	abort();
+}
+
 void* malloc_or_die(const size_t size)
 {
 	void* const result = malloc(size);
-	if (!result)
-	{
-		perror("Allocation failed");
-		abort();
-	}
+	if (!result) fatal_error("Allocation failed");
 	return result;
 }
 
 void* realloc_or_die(void* const pointer, const size_t size)
 {
 	void* const result = realloc(pointer, size);
-	if (!result)
-	{
-		perror("Reallocation failed");
-		abort();
-	}
+	if (!result) fatal_error("Allocation failed");
 	return result;
 }
 
@@ -99,7 +97,7 @@ void bb_write_array(struct byte_buffer* const buffer, const u1* const array, con
 {
 	memcpy(bb_append(buffer, length), array, length);
 }
-		
+
 bool bb_write_to_stream(const struct byte_buffer* const buffer, FILE* const stream)
 {
 	return (fwrite(buffer->data, 1, buffer->length, stream) == buffer->length);
