@@ -101,19 +101,19 @@ static void write_output(buffer destination, java_file file)
 	buffer_write_1(destination, OP_DUP2);
 	buffer_write_1(destination, OP_BALOAD);
 	buffer_write_1(destination, OP_GETSTATIC);
-	buffer_write_2(destination, java_ref_field(file, "java/lang/System", "out", "Ljava/io/PrintStream;"));
+	buffer_write_2(destination, constant_field(java_get_constant_pool(file), "java/lang/System", "out", "Ljava/io/PrintStream;"));
 	buffer_write_1(destination, OP_SWAP);
 	buffer_write_1(destination, OP_INVOKEVIRTUAL);
-	buffer_write_2(destination, java_ref_method(file, "java/io/PrintStream", "print", "(C)V"));
+	buffer_write_2(destination, constant_method(java_get_constant_pool(file), "java/io/PrintStream", "print", "(C)V"));
 }
 
 static void write_input(buffer destination, java_file file)
 {
 	buffer_write_1(destination, OP_DUP2);
 	buffer_write_1(destination, OP_GETSTATIC);
-	buffer_write_2(destination, java_ref_field(file, "java/lang/System", "in", "Ljava/io/InputStream;"));
+	buffer_write_2(destination, constant_field(java_get_constant_pool(file), "java/lang/System", "in", "Ljava/io/InputStream;"));
 	buffer_write_1(destination, OP_INVOKEVIRTUAL);
-	buffer_write_2(destination, java_ref_method(file, "java/io/InputStream", "read", "()I"));
+	buffer_write_2(destination, constant_method(java_get_constant_pool(file), "java/io/InputStream", "read", "()I"));
 	buffer_write_1(destination, OP_BASTORE);
 }
 

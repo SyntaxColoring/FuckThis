@@ -28,40 +28,4 @@ char* string_clone(const char* source);
    for freeing the new string. */
 char* string_create_concatenated(const char* a, const char* b);
 
-/* A buffer for writing binary data. */
-struct byte_buffer
-{
-	u1* data;
-	size_t length;
-	size_t capacity;
-};
-
-/* Default "constructor" for struct byte_buffer. */
-#define BYTE_BUFFER_EMPTY {NULL, 0, 0}
-
-/* Releases the resources held by buffer and resets its members. */
-void bb_free(struct byte_buffer* buffer);
-
-/* Gives buffer at least enough space to hold capacity u1s.  If capacity is
-   smaller than buffer's current capacity, data will be truncated.  If
-   allocation fails, the program is aborted.  This function is called as needed
-   by bb_append() and all bb_write_*() functions. */
-void bb_reserve(struct byte_buffer* buffer, size_t capacity);
-
-/* Returns a pointer to a sub-array at the end of buffer to which at least
-   length u1s can be written. */
-u1* bb_append(struct byte_buffer* buffer, size_t length);
-
-/* Functions for writing to a byte_buffer (always in big-endian form). */
-void bb_write_u1(struct byte_buffer* buffer, u1 data);
-void bb_write_u2(struct byte_buffer* buffer, u2 data);
-void bb_write_u4(struct byte_buffer* buffer, u4 data);
-
-/* Writes length elements from array into buffer. */
-void bb_write_array(struct byte_buffer* buffer, const u1* array, size_t length);
-
-/* Writes all of a buffer's data into a stream.  Returns whether or not the
-   operation succeeded. */
-bool bb_write_to_stream(const struct byte_buffer* buffer, FILE* stream);
-
 #endif

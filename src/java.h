@@ -4,6 +4,7 @@
 #define JAVACLASS_H_INCLUDED
 
 #include <stdio.h>
+#include "cpool.h"
 #include "util.h"
 
 typedef struct java_file_opaque* java_file;
@@ -40,20 +41,7 @@ struct java_class
 java_file java_create(void);
 void java_free(java_file file);
 struct java_class* java_get_class(java_file file);
+constant_pool java_get_constant_pool(java_file file);
 void java_write(java_file file, FILE* stream);
-
-unsigned int java_ref_utf8(java_file file, const char* string);
-unsigned int java_ref_class(java_file file, const char* name);
-unsigned int java_ref_name_and_type(java_file file,
-                                    const char* name,
-                                    const char* type);
-unsigned int java_ref_field(java_file file,
-                            const char* class_name,
-                            const char* field_name,
-                            const char* field_type);
-unsigned int java_ref_method(java_file context,
-                             const char* class_name,
-                             const char* method_name,
-                             const char* method_type);
 
 #endif
